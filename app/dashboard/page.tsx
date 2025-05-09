@@ -73,13 +73,12 @@ export default function Dashboard() {
     try {
       const lamports = Number(amount) * 1e9;
   
-      // Get the latest blockhash
       const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
   
-      // Create transaction
-      const transaction = new Transaction();
-      transaction.feePayer = publicKey;
-      transaction.recentBlockhash = blockhash;
+      const transaction = new Transaction({
+        feePayer: publicKey,
+        recentBlockhash: blockhash,
+      });
   
       transaction.add(
         SystemProgram.transfer({
@@ -89,11 +88,13 @@ export default function Dashboard() {
         })
       );
   
+      // ✅ Send the transaction using wallet adapter
       const signature = await sendTransaction(transaction, connection);
   
+      // ✅ Confirm the transaction
       await connection.confirmTransaction(
         { signature, blockhash, lastValidBlockHeight },
-        "confirmed"
+        'confirmed'
       );
   
       toast.success("Transaction successful");
@@ -105,6 +106,7 @@ export default function Dashboard() {
       toast.error("Transaction failed: " + error.message);
     }
   };
+  
   
   
   
