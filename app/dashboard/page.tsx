@@ -6,7 +6,10 @@ import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import BalanceCard from "@/components/ui/BalanceCard";
-import { PublicKey, SystemProgram, Transaction } from "@solana/web3.js";
+import { Connection, PublicKey, Transaction, SystemProgram } from '@solana/web3.js';
+
+import { clusterApiUrl } from '@solana/web3.js';
+
 import QRCode from "react-qr-code";
 import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
@@ -17,7 +20,6 @@ const QrScanner = dynamic(() => import("@/components/ui/QrScanner"), { ssr: fals
 
 export default function Dashboard() {
   const { publicKey, sendTransaction, disconnect } = useWallet();
-  const { connection } = useConnection();
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const router = useRouter();
 
@@ -27,6 +29,7 @@ export default function Dashboard() {
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [showQR, setShowQR] = useState(false);
   const [transactions, setTransactions] = useState<any[]>([]);
+  const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
 
   useEffect(() => {
     if (!publicKey) {
@@ -71,16 +74,20 @@ export default function Dashboard() {
     }
   
     try {
+      // Convert amount to lamports
       const lamports = Number(amount) * 1e9;
   
+      // Create a connection to the Solana devnet
+      const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
+  
+      // Get the latest blockhash and valid block height
       const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
   
+      // Create the transaction
       const transaction = new Transaction({
         feePayer: publicKey,
         recentBlockhash: blockhash,
-      });
-  
-      transaction.add(
+      }).add(
         SystemProgram.transfer({
           fromPubkey: publicKey,
           toPubkey: new PublicKey(sendTo),
@@ -88,16 +95,19 @@ export default function Dashboard() {
         })
       );
   
-      // ✅ Send the transaction using wallet adapter
+      // Send the transaction using the wallet adapter
       const signature = await sendTransaction(transaction, connection);
   
-      // ✅ Confirm the transaction
+      // Confirm the transaction
       await connection.confirmTransaction(
         { signature, blockhash, lastValidBlockHeight },
         'confirmed'
       );
   
+      // Notify the user
       toast.success("Transaction successful");
+  
+      // Reset form fields
       setSendTo("");
       setAmount("");
       fetchTransactions();
@@ -106,6 +116,7 @@ export default function Dashboard() {
       toast.error("Transaction failed: " + error.message);
     }
   };
+  
   
   
   
