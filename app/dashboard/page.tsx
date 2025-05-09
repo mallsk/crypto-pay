@@ -14,6 +14,7 @@ import { Send, ScanLine,QrCode,Share2} from "lucide-react"
 import ServiceGrid from "@/components/ui/ServiceGrid";
 const QrScanner = dynamic(() => import("@/components/ui/QrScanner"), { ssr: false });
 
+
 export default function Dashboard() {
   const { publicKey, sendTransaction, disconnect } = useWallet();
   const { connection } = useConnection();
@@ -68,24 +69,34 @@ export default function Dashboard() {
       toast.error("Missing fields");
       return;
     }
-
+  
     try {
       const lamports = Number(amount) * 1e9;
-      const transaction = new Transaction().add(
+  
+      // ✅ Fetch recent blockhash
+      const { blockhash } = await connection.getLatestBlockhash("finalized");
+  
+      // ✅ Create transaction with blockhash & fee payer
+      const transaction = new Transaction({
+        recentBlockhash: blockhash,
+        feePayer: publicKey,
+      }).add(
         SystemProgram.transfer({
           fromPubkey: publicKey,
           toPubkey: new PublicKey(sendTo),
           lamports,
         })
       );
+  
+      // ✅ Send and confirm
       const signature = await sendTransaction(transaction, connection);
-      toast.success("Transaction Successfull");
+      toast.success("Transaction successful: " + signature);
       setSendTo("");
       setAmount("");
       fetchTransactions();
-    } catch (error) {
-      console.error(error);
-      toast.error("Transaction failed"+ error);
+    } catch (error: any) {
+      console.error("Transaction failed", error);
+      toast.error("Transaction failed: " + error.message);
     }
   };
 
