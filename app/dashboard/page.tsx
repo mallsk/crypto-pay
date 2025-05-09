@@ -73,10 +73,10 @@ export default function Dashboard() {
     try {
       const lamports = Number(amount) * 1e9;
   
-      // ✅ Fetch recent blockhash
-      const { blockhash } = await connection.getLatestBlockhash("finalized");
+      // Fetch latest blockhash
+      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
   
-      // ✅ Create transaction with blockhash & fee payer
+      // Create transaction with blockhash and fee payer
       const transaction = new Transaction({
         recentBlockhash: blockhash,
         feePayer: publicKey,
@@ -88,17 +88,25 @@ export default function Dashboard() {
         })
       );
   
-      // ✅ Send and confirm
+      // Use sendTransaction which handles signing and sending
       const signature = await sendTransaction(transaction, connection);
-      toast.success("Transaction successful: " + signature);
+  
+      // Confirm the transaction
+      await connection.confirmTransaction(
+        { signature, blockhash, lastValidBlockHeight },
+        'confirmed'
+      );
+  
+      toast.success("Transaction successful!");
       setSendTo("");
       setAmount("");
       fetchTransactions();
     } catch (error: any) {
-      console.error("Transaction failed", error);
+      console.error("Transaction error:", error);
       toast.error("Transaction failed: " + error.message);
     }
   };
+  
 
   const copyToClipboard = () => {
     if (walletAddress) {
