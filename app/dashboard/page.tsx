@@ -85,7 +85,7 @@ export default function Dashboard() {
       fetchTransactions();
     } catch (error) {
       console.error(error);
-      toast.error("Transaction failed");
+      toast.error("Transaction failed"+ error);
     }
   };
 
