@@ -27,16 +27,19 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning={true} lang="en">
       <WalletConnector>
-      <body suppressHydrationWarning={true} 
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ThemeProvider  attribute="class"
-        defaultTheme="dark"
-        enableSystem
-        disableTransitionOnChange>
-        {children}
-        </ThemeProvider>
-      </body>
+        <body
+          suppressHydrationWarning={true}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
+        </body>
       </WalletConnector>
     </html>
   );

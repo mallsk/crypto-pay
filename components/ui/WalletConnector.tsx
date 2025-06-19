@@ -3,17 +3,12 @@
 import React, { FC, ReactNode, useMemo } from "react";
 import {
   ConnectionProvider,
-  WalletProvider
+  WalletProvider,
 } from "@solana/wallet-adapter-react";
-import {
-  WalletModalProvider
-} from "@solana/wallet-adapter-react-ui";
-import { 
-  UnsafeBurnerWalletAdapter
-} from "@solana/wallet-adapter-wallets";
+import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
+import { UnsafeBurnerWalletAdapter } from "@solana/wallet-adapter-wallets";
 import { clusterApiUrl } from "@solana/web3.js";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-
 
 require("@solana/wallet-adapter-react-ui/styles.css");
 
@@ -26,9 +21,7 @@ export const WalletConnector: FC<{ children: ReactNode }> = ({ children }) => {
   return (
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
-        <WalletModalProvider>
-          {children}
-        </WalletModalProvider>
+        <WalletModalProvider>{children}</WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
   );

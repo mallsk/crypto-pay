@@ -1,19 +1,19 @@
-'use client';
+"use client";
 
-import { Moon, Sun } from 'lucide-react';
-import { useTheme } from 'next-themes';
-import { Button } from './button';
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import { Button } from "./button";
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();
 
   const switchTheme = () => {
     switch (theme) {
-      case 'dark':
-        setTheme('light');
+      case "dark":
+        setTheme("light");
         break;
-      case 'light':
-        setTheme('dark');
+      case "light":
+        setTheme("dark");
         break;
       default:
         break;
@@ -21,7 +21,7 @@ export default function ThemeToggle() {
   };
 
   const toggleTheme = () => {
-      switchTheme();
+    switchTheme();
   };
 
   return (

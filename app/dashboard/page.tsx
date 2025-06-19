@@ -6,17 +6,23 @@ import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import BalanceCard from "@/components/ui/BalanceCard";
-import { Connection, PublicKey, Transaction, SystemProgram } from '@solana/web3.js';
+import {
+  Connection,
+  PublicKey,
+  Transaction,
+  SystemProgram,
+} from "@solana/web3.js";
 
-import { clusterApiUrl } from '@solana/web3.js';
+import { clusterApiUrl } from "@solana/web3.js";
 
 import QRCode from "react-qr-code";
 import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
-import { Send, ScanLine,QrCode,Share2} from "lucide-react"
+import { Send, ScanLine, QrCode, Share2 } from "lucide-react";
 import ServiceGrid from "@/components/ui/ServiceGrid";
-const QrScanner = dynamic(() => import("@/components/ui/QrScanner"), { ssr: false });
-
+const QrScanner = dynamic(() => import("@/components/ui/QrScanner"), {
+  ssr: false,
+});
 
 export default function Dashboard() {
   const { publicKey, sendTransaction, disconnect } = useWallet();
@@ -29,7 +35,7 @@ export default function Dashboard() {
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [showQR, setShowQR] = useState(false);
   const [transactions, setTransactions] = useState<any[]>([]);
-  const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
+  const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
 
   useEffect(() => {
     if (!publicKey) {
@@ -44,9 +50,11 @@ export default function Dashboard() {
 
   const fetchTransactions = async () => {
     if (!publicKey) return;
-  
+
     try {
-      const signatures = await connection.getSignaturesForAddress(publicKey, { limit: 5 });
+      const signatures = await connection.getSignaturesForAddress(publicKey, {
+        limit: 5,
+      });
       const txs = await Promise.all(
         signatures.map(async (sig) => {
           const tx = await connection.getTransaction(sig.signature, {
@@ -72,17 +80,18 @@ export default function Dashboard() {
       toast.error("Missing fields");
       return;
     }
-  
+
     try {
       // Convert amount to lamports
       const lamports = Number(amount) * 1e9;
-  
+
       // Create a connection to the Solana devnet
-      const connection = new Connection(clusterApiUrl('devnet'), 'confirmed');
-  
+      const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+
       // Get the latest blockhash and valid block height
-      const { blockhash, lastValidBlockHeight } = await connection.getLatestBlockhash();
-  
+      const { blockhash, lastValidBlockHeight } =
+        await connection.getLatestBlockhash();
+
       // Create the transaction
       const transaction = new Transaction({
         feePayer: publicKey,
@@ -94,19 +103,19 @@ export default function Dashboard() {
           lamports,
         })
       );
-  
+
       // Send the transaction using the wallet adapter
       const signature = await sendTransaction(transaction, connection);
-  
+
       // Confirm the transaction
       await connection.confirmTransaction(
         { signature, blockhash, lastValidBlockHeight },
-        'confirmed'
+        "confirmed"
       );
-  
+
       // Notify the user
       toast.success("Transaction successful");
-  
+
       // Reset form fields
       setSendTo("");
       setAmount("");
@@ -116,11 +125,6 @@ export default function Dashboard() {
       toast.error("Transaction failed: " + error.message);
     }
   };
-  
-  
-  
-  
-  
 
   const copyToClipboard = () => {
     if (walletAddress) {
@@ -153,7 +157,9 @@ export default function Dashboard() {
         <div className="flex flex-col items-center px-4 py-6">
           {/* Top Bar */}
           <div className="w-full max-w-5xl flex items-center justify-between mb-6 p-4 rounded-xl shadow bg-white dark:bg-gray-900">
-            <div className="text-xl font-bold text-blue-600 dark:text-blue-400">SolPay</div>
+            <div className="text-xl font-bold text-blue-600 dark:text-blue-400">
+              SolPay
+            </div>
             <div className="flex items-center gap-4">
               <ThemeToggle />
               <button
@@ -169,17 +175,48 @@ export default function Dashboard() {
 
           {/* Action Buttons */}
           <div className="mt-6 grid grid-cols-4 gap-x-8 gap-y-4">
-            <button onClick={() => setIsSendModalOpen(true)} className="bg-blue-500 text-white py-2 px-4 rounded shadow"><Send/></button>
-            <button onClick={() => setIsQRModalOpen(true)} className="bg-yellow-500 text-white py-2 px-4 rounded shadow"><ScanLine/></button>
-            <button onClick={() => setShowQR(true)} className="bg-green-500 text-white py-2 px-4 rounded shadow"><QrCode/></button>
-            <button onClick={handleShareQR} className="bg-indigo-500 text-white py-2 px-4 rounded shadow"><Share2/></button>
+            <button
+              onClick={() => setIsSendModalOpen(true)}
+              className="bg-blue-500 text-white py-2 px-4 rounded shadow"
+            >
+              <Send />
+            </button>
+            <button
+              onClick={() => setIsQRModalOpen(true)}
+              className="bg-yellow-500 text-white py-2 px-4 rounded shadow"
+            >
+              <ScanLine />
+            </button>
+            <button
+              onClick={() => setShowQR(true)}
+              className="bg-green-500 text-white py-2 px-4 rounded shadow"
+            >
+              <QrCode />
+            </button>
+            <button
+              onClick={handleShareQR}
+              className="bg-indigo-500 text-white py-2 px-4 rounded shadow"
+            >
+              <Share2 />
+            </button>
           </div>
 
           {showQR && walletAddress && (
-            <motion.div className="mt-6 flex flex-col items-center gap-2" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <motion.div
+              className="mt-6 flex flex-col items-center gap-2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
               <QRCode value={walletAddress} size={128} />
-              <div className="text-sm text-center break-all">{walletAddress}</div>
-              <button onClick={copyToClipboard} className="bg-blue-600 text-white px-3 py-1 rounded">Copy</button>
+              <div className="text-sm text-center break-all">
+                {walletAddress}
+              </div>
+              <button
+                onClick={copyToClipboard}
+                className="bg-blue-600 text-white px-3 py-1 rounded"
+              >
+                Copy
+              </button>
             </motion.div>
           )}
 
@@ -193,7 +230,9 @@ export default function Dashboard() {
                 exit={{ opacity: 0 }}
               >
                 <div className="bg-white dark:bg-gray-800 rounded-xl p-6 w-full max-w-sm shadow-lg">
-                  <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">Send SOL</h2>
+                  <h2 className="text-xl font-semibold mb-4 text-gray-800 dark:text-white">
+                    Send SOL
+                  </h2>
                   <input
                     type="text"
                     placeholder="Recipient Public Key"
@@ -212,14 +251,18 @@ export default function Dashboard() {
                     <button
                       onClick={() => setIsSendModalOpen(false)}
                       className="px-4 py-2 bg-gray-400 hover:bg-gray-500 text-white rounded"
-                    >Cancel</button>
+                    >
+                      Cancel
+                    </button>
                     <button
                       onClick={() => {
                         setIsSendModalOpen(false);
                         handleSendSol();
                       }}
                       className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded"
-                    >Send</button>
+                    >
+                      Send
+                    </button>
                   </div>
                 </div>
               </motion.div>
@@ -236,57 +279,68 @@ export default function Dashboard() {
                 exit={{ opacity: 0 }}
               >
                 <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg">
-                  <QrScanner onScan={handleScanSuccess} onClose={() => setIsQRModalOpen(false)} />
+                  <QrScanner
+                    onScan={handleScanSuccess}
+                    onClose={() => setIsQRModalOpen(false)}
+                  />
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
 
-            <ServiceGrid />
+          <ServiceGrid />
           {/* Transaction History */}
           <div className="mt-10 w-full max-w-3xl">
-  <h2 className="text-xl font-semibold mb-4">🧾 Recent Transactions</h2>
+            <h2 className="text-xl font-semibold mb-4">
+              🧾 Recent Transactions
+            </h2>
 
-  {transactions.length > 0 ? (
-    <div className="space-y-4">
-      {transactions.map((tx, index) => {
-        const status = tx.meta?.err ? "❌ Failed" : "✅ Success";
-        const amountLamports = tx.meta?.postBalances?.[1] - tx.meta?.preBalances?.[1];
-        const amountSol = amountLamports / 1e9;
+            {transactions.length > 0 ? (
+              <div className="space-y-4">
+                {transactions.map((tx, index) => {
+                  const status = tx.meta?.err ? "❌ Failed" : "✅ Success";
+                  const amountLamports =
+                    tx.meta?.postBalances?.[1] - tx.meta?.preBalances?.[1];
+                  const amountSol = amountLamports / 1e9;
 
-        const sender = tx.transaction.message.accountKeys[0].toBase58();
-        const receiver = tx.transaction.message.accountKeys[1].toBase58();
+                  const sender =
+                    tx.transaction.message.accountKeys[0].toBase58();
+                  const receiver =
+                    tx.transaction.message.accountKeys[1].toBase58();
 
-        return (
-          <div
-            key={index}
-            className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow flex flex-col gap-2"
-          >
-            <div className="text-sm text-gray-700 dark:text-gray-300">
-              <span className="font-medium">Sender:</span> {sender}
-            </div>
-            <div className="text-sm text-gray-700 dark:text-gray-300">
-              <span className="font-medium">Receiver:</span> {receiver}
-            </div>
-            <div className="text-sm text-gray-700 dark:text-gray-300">
-              <span className="font-medium">Amount:</span> {amountSol.toFixed(4)} SOL
-            </div>
-            <div
-              className={`text-sm font-medium ${
-                tx.meta?.err ? "text-red-500" : "text-green-500"
-              }`}
-            >
-              Status: {status}
-            </div>
+                  return (
+                    <div
+                      key={index}
+                      className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow flex flex-col gap-2"
+                    >
+                      <div className="text-sm text-gray-700 dark:text-gray-300">
+                        <span className="font-medium">Sender:</span> {sender}
+                      </div>
+                      <div className="text-sm text-gray-700 dark:text-gray-300">
+                        <span className="font-medium">Receiver:</span>{" "}
+                        {receiver}
+                      </div>
+                      <div className="text-sm text-gray-700 dark:text-gray-300">
+                        <span className="font-medium">Amount:</span>{" "}
+                        {amountSol.toFixed(4)} SOL
+                      </div>
+                      <div
+                        className={`text-sm font-medium ${
+                          tx.meta?.err ? "text-red-500" : "text-green-500"
+                        }`}
+                      >
+                        Status: {status}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <p className="text-gray-500 text-sm">
+                No recent transactions found.
+              </p>
+            )}
           </div>
-        );
-      })}
-    </div>
-  ) : (
-    <p className="text-gray-500 text-sm">No recent transactions found.</p>
-  )}
-</div>
-
         </div>
       ) : (
         <div className="text-center mt-10 text-lg font-semibold text-gray-600 dark:text-gray-300">

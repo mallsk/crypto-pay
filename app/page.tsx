@@ -1,8 +1,16 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { QrCode, Wallet, Zap, Shield, Smartphone, CheckCircle, Sparkles } from "lucide-react"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import {
+  QrCode,
+  Wallet,
+  Zap,
+  Shield,
+  Smartphone,
+  CheckCircle,
+  Sparkles,
+} from "lucide-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { useRouter } from "next/navigation";
@@ -33,18 +41,19 @@ export default function Home() {
             SolanaPay
           </span>
         </Link>
-        
+
         <nav className="ml-auto">
-        <div className="flex justify-center p-4 gap-4">
-        <ThemeToggle />
-          <Button onClick={()=> setVisible(true)}
-            size="lg"
-            className="bg-gradient-to-r from-purple-600 to-teal-500 hover:from-purple-700 hover:to-teal-600 text-white shadow-lg shadow-purple-500/20 hover:shadow-purple-500/30 transition-all duration-300"
-          >
-            <Wallet className="mr-2 h-5 w-5" />
-            Connect Wallet
-          </Button>
-        </div>
+          <div className="flex justify-center p-4 gap-4">
+            <ThemeToggle />
+            <Button
+              onClick={() => setVisible(true)}
+              size="lg"
+              className="bg-gradient-to-r from-purple-600 to-teal-500 hover:from-purple-700 hover:to-teal-600 text-white shadow-lg shadow-purple-500/20 hover:shadow-purple-500/30 transition-all duration-300"
+            >
+              <Wallet className="mr-2 h-5 w-5" />
+              Connect Wallet
+            </Button>
+          </div>
         </nav>
       </header>
       <main className="flex-1">
@@ -70,12 +79,14 @@ export default function Home() {
                     </span>
                   </h1>
                   <p className="max-w-[600px] text-gray-600 md:text-xl dark:text-gray-400 leading-relaxed">
-                    Forget complicated wallet addresses. SolanaPay works just like Google Pay or Phone Pay, but with the
-                    power and security of Solana blockchain.
+                    Forget complicated wallet addresses. SolanaPay works just
+                    like Google Pay or Phone Pay, but with the power and
+                    security of Solana blockchain.
                   </p>
                 </div>
                 <div>
-          <Button onClick={()=> setVisible(true)}
+                  <Button
+                    onClick={() => setVisible(true)}
                     size="lg"
                     className="bg-gradient-to-r from-purple-600 to-teal-500 hover:from-purple-700 hover:to-teal-600 text-white shadow-lg shadow-purple-500/20 hover:shadow-purple-500/30 transition-all duration-300 text-lg px-8 py-6 h-auto"
                   >
@@ -91,7 +102,9 @@ export default function Home() {
                         key={i}
                         className="w-10 h-10 rounded-full border-2 border-white dark:border-gray-800 flex items-center justify-center bg-purple-100 dark:bg-purple-900/50"
                       >
-                        <span className="text-xs font-medium text-purple-700 dark:text-purple-300">{i}K+</span>
+                        <span className="text-xs font-medium text-purple-700 dark:text-purple-300">
+                          {i}K+
+                        </span>
                       </div>
                     ))}
                   </div>
@@ -105,7 +118,9 @@ export default function Home() {
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-teal-500 rounded-3xl blur-2xl opacity-20 animate-pulse"></div>
                   <div className="relative bg-white dark:bg-gray-900 border border-purple-200 dark:border-purple-900/50 rounded-3xl overflow-hidden shadow-2xl h-full flex items-center justify-center">
                     <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-r from-purple-600 to-teal-500 flex items-center justify-center">
-                      <span className="text-white font-medium text-lg">Scan to Pay</span>
+                      <span className="text-white font-medium text-lg">
+                        Scan to Pay
+                      </span>
                     </div>
                     <div className="pt-20 px-4 flex flex-col items-center">
                       <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-lg mb-6 border border-purple-100 dark:border-purple-900/50 relative group">
@@ -119,7 +134,9 @@ export default function Home() {
                           </div>
                           <div>
                             <p className="font-medium">Payment Complete</p>
-                            <p className="text-sm text-gray-500">Coffee Shop • $4.50</p>
+                            <p className="text-sm text-gray-500">
+                              Coffee Shop • $4.50
+                            </p>
                           </div>
                         </div>
                         <Button className="w-full bg-gradient-to-r from-purple-600 to-teal-500 hover:from-purple-700 hover:to-teal-600">
@@ -140,14 +157,17 @@ export default function Home() {
           <div className="container px-4 md:px-6 relative">
             <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
               <div className="inline-flex items-center rounded-full bg-gradient-to-r from-purple-500/10 to-teal-500/10 px-4 py-2 text-sm w-fit">
-                <span className="text-purple-700 dark:text-purple-400 font-medium">Simple 3-step process</span>
+                <span className="text-purple-700 dark:text-purple-400 font-medium">
+                  Simple 3-step process
+                </span>
               </div>
               <div className="space-y-2 max-w-3xl">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl bg-gradient-to-br from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 text-transparent bg-clip-text">
                   How It Works
                 </h2>
                 <p className="text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                  As simple as Google Pay or Phone Pay, but powered by Solana blockchain
+                  As simple as Google Pay or Phone Pay, but powered by Solana
+                  blockchain
                 </p>
               </div>
             </div>
@@ -176,7 +196,8 @@ export default function Home() {
                   Scan QR Code
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
-                  Scan the merchant's QR code - no need to enter any wallet addresses
+                  Scan the merchant's QR code - no need to enter any wallet
+                  addresses
                 </p>
                 <div className="mt-6 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg w-full max-w-[250px] border border-purple-100 dark:border-purple-900/50 group-hover:border-teal-300 dark:group-hover:border-teal-700 transition-colors duration-300">
                   <QrCode className="h-32 w-32 mx-auto text-teal-600" />
@@ -209,7 +230,9 @@ export default function Home() {
             <div className="grid gap-6 lg:grid-cols-2 lg:gap-12">
               <div className="flex flex-col justify-center space-y-4">
                 <div className="inline-flex items-center rounded-full bg-gradient-to-r from-purple-500/10 to-teal-500/10 px-4 py-2 text-sm w-fit">
-                  <span className="text-purple-700 dark:text-purple-400 font-medium">Why choose SolanaPay</span>
+                  <span className="text-purple-700 dark:text-purple-400 font-medium">
+                    Why choose SolanaPay
+                  </span>
                 </div>
                 <div className="space-y-2">
                   <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl bg-gradient-to-br from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 text-transparent bg-clip-text">
@@ -219,8 +242,8 @@ export default function Home() {
                     </span>
                   </h2>
                   <p className="max-w-[600px] text-gray-600 md:text-xl dark:text-gray-400">
-                    SolanaPay feels just like Google Pay or Phone Pay, but with all the benefits of blockchain
-                    technology.
+                    SolanaPay feels just like Google Pay or Phone Pay, but with
+                    all the benefits of blockchain technology.
                   </p>
                 </div>
 
@@ -234,7 +257,8 @@ export default function Home() {
                         Instant Payments
                       </h3>
                       <p className="text-gray-600 dark:text-gray-400">
-                        Payments complete in less than a second, just like your favorite payment apps
+                        Payments complete in less than a second, just like your
+                        favorite payment apps
                       </p>
                     </div>
                   </div>
@@ -248,7 +272,8 @@ export default function Home() {
                         Lower Fees
                       </h3>
                       <p className="text-gray-600 dark:text-gray-400">
-                        Pay a fraction of the fees compared to traditional payment processors
+                        Pay a fraction of the fees compared to traditional
+                        payment processors
                       </p>
                     </div>
                   </div>
@@ -262,7 +287,8 @@ export default function Home() {
                         Works Everywhere
                       </h3>
                       <p className="text-gray-600 dark:text-gray-400">
-                        Send money globally with the same ease as sending it locally
+                        Send money globally with the same ease as sending it
+                        locally
                       </p>
                     </div>
                   </div>
@@ -275,8 +301,12 @@ export default function Home() {
                   <div className="relative bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl border border-purple-100 dark:border-purple-900/50">
                     <div className="grid grid-cols-2 gap-6">
                       <div className="flex flex-col items-center p-6 bg-gray-100 dark:bg-gray-900 rounded-xl">
-                        <div className="mb-4 text-xl font-bold">Traditional Apps</div>
-                        <div className="text-center text-sm text-gray-500 mb-6">Google Pay, Phone Pay</div>
+                        <div className="mb-4 text-xl font-bold">
+                          Traditional Apps
+                        </div>
+                        <div className="text-center text-sm text-gray-500 mb-6">
+                          Google Pay, Phone Pay
+                        </div>
                         <div className="flex items-center text-green-500 mb-3">
                           <CheckCircle className="h-5 w-5 mr-2" />
                           <span>Easy to use</span>
@@ -297,7 +327,9 @@ export default function Home() {
                         <div className="mb-4 text-xl font-bold bg-gradient-to-r from-purple-600 to-teal-500 text-transparent bg-clip-text">
                           SolanaPay
                         </div>
-                        <div className="text-center text-sm text-gray-500 mb-6">Blockchain Simplified</div>
+                        <div className="text-center text-sm text-gray-500 mb-6">
+                          Blockchain Simplified
+                        </div>
                         <div className="flex items-center text-green-500 mb-3">
                           <CheckCircle className="h-5 w-5 mr-2" />
                           <span>Easy to use</span>
@@ -330,7 +362,9 @@ export default function Home() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="inline-flex items-center rounded-full bg-gradient-to-r from-purple-500/10 to-teal-500/10 px-4 py-2 text-sm w-fit">
                 <Sparkles className="h-4 w-4 mr-2 text-purple-600" />
-                <span className="text-purple-700 dark:text-purple-400 font-medium">Start using SolanaPay today</span>
+                <span className="text-purple-700 dark:text-purple-400 font-medium">
+                  Start using SolanaPay today
+                </span>
               </div>
               <div className="space-y-2 max-w-3xl">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl bg-gradient-to-br from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 text-transparent bg-clip-text">
@@ -341,7 +375,8 @@ export default function Home() {
                 </p>
               </div>
               <div className="mt-6">
-                <Button onClick={()=> setVisible(true)}
+                <Button
+                  onClick={() => setVisible(true)}
                   size="lg"
                   className="bg-gradient-to-r from-purple-600 to-teal-500 hover:from-purple-700 hover:to-teal-600 text-white shadow-lg shadow-purple-500/20 hover:shadow-purple-500/30 transition-all duration-300 text-lg px-8 py-6 h-auto"
                 >
@@ -367,15 +402,26 @@ export default function Home() {
                 SolanaPay
               </span>
             </div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">© 2025 SolanaPay. All rights reserved.</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              © 2025 SolanaPay. All rights reserved.
+            </p>
             <nav className="flex gap-6">
-              <Link className="text-sm hover:text-purple-600 transition-colors duration-200" href="#">
+              <Link
+                className="text-sm hover:text-purple-600 transition-colors duration-200"
+                href="#"
+              >
                 Terms
               </Link>
-              <Link className="text-sm hover:text-purple-600 transition-colors duration-200" href="#">
+              <Link
+                className="text-sm hover:text-purple-600 transition-colors duration-200"
+                href="#"
+              >
                 Privacy
               </Link>
-              <Link className="text-sm hover:text-purple-600 transition-colors duration-200" href="#">
+              <Link
+                className="text-sm hover:text-purple-600 transition-colors duration-200"
+                href="#"
+              >
                 Contact
               </Link>
             </nav>
@@ -409,6 +455,5 @@ export default function Home() {
         }
       `}</style>
     </div>
-  )
+  );
 }
-

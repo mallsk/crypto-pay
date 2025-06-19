@@ -27,7 +27,9 @@ export default function QrScanner({
     );
 
     return () => {
-      scanner.clear().catch((error) => console.error("Failed to clear scanner", error));
+      scanner
+        .clear()
+        .catch((error) => console.error("Failed to clear scanner", error));
     };
   }, [onScan]);
 

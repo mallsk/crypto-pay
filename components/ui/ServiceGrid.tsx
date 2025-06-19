@@ -1,5 +1,14 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Plane, Bus, Smartphone, Receipt, ShoppingBag, Tv, Zap, Coffee } from "lucide-react"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Plane,
+  Bus,
+  Smartphone,
+  Receipt,
+  ShoppingBag,
+  Tv,
+  Zap,
+  Coffee,
+} from "lucide-react";
 
 export default function ServiceGrid() {
   const services = [
@@ -11,7 +20,7 @@ export default function ServiceGrid() {
     { icon: <Tv className="h-6 w-6" />, name: "Entertainment" },
     { icon: <Zap className="h-6 w-6" />, name: "Electricity" },
     { icon: <Coffee className="h-6 w-6" />, name: "Food & Drinks" },
-  ]
+  ];
 
   return (
     <Card className="mt-6">
@@ -31,5 +40,5 @@ export default function ServiceGrid() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
