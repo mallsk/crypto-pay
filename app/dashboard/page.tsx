@@ -12,14 +12,13 @@ import {
   Transaction,
   SystemProgram,
 } from "@solana/web3.js";
-
 import { clusterApiUrl } from "@solana/web3.js";
-
 import QRCode from "react-qr-code";
 import { motion, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
 import { Send, ScanLine, QrCode, Share2 } from "lucide-react";
 import ServiceGrid from "@/components/ui/ServiceGrid";
+
 const QrScanner = dynamic(() => import("@/components/ui/QrScanner"), {
   ssr: false,
 });
@@ -82,17 +81,12 @@ export default function Dashboard() {
     }
 
     try {
-      // Convert amount to lamports
       const lamports = Number(amount) * 1e9;
-
-      // Create a connection to the Solana devnet
       const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
 
-      // Get the latest blockhash and valid block height
       const { blockhash, lastValidBlockHeight } =
         await connection.getLatestBlockhash();
 
-      // Create the transaction
       const transaction = new Transaction({
         feePayer: publicKey,
         recentBlockhash: blockhash,
@@ -104,19 +98,14 @@ export default function Dashboard() {
         })
       );
 
-      // Send the transaction using the wallet adapter
       const signature = await sendTransaction(transaction, connection);
 
-      // Confirm the transaction
       await connection.confirmTransaction(
         { signature, blockhash, lastValidBlockHeight },
         "confirmed"
       );
 
-      // Notify the user
       toast.success("Transaction successful");
-
-      // Reset form fields
       setSendTo("");
       setAmount("");
       fetchTransactions();
@@ -147,6 +136,24 @@ export default function Dashboard() {
       });
     } else {
       toast.error("Sharing not supported on this device");
+    }
+  };
+
+  // ✅ NEW FUNCTION: Share transaction receipt
+  const shareTransactionReceipt = (signature: string) => {
+    const explorerUrl = `https://explorer.solana.com/tx/${signature}?cluster=devnet`;
+
+    if (navigator.share) {
+      navigator
+        .share({
+          title: "Solana Transaction Receipt",
+          text: `View this transaction on Solana Explorer:\n${explorerUrl}`,
+          url: explorerUrl,
+        })
+        .catch((err) => console.error("Share failed:", err));
+    } else {
+      navigator.clipboard.writeText(explorerUrl);
+      toast.success("Transaction link copied to clipboard!");
     }
   };
 
@@ -289,11 +296,10 @@ export default function Dashboard() {
           </AnimatePresence>
 
           <ServiceGrid />
+
           {/* Transaction History */}
           <div className="mt-10 w-full max-w-3xl">
-            <h2 className="text-xl font-semibold mb-4">
-              🧾 Recent Transactions
-            </h2>
+            <h2 className="text-xl font-semibold mb-4">🧾 Recent Transactions</h2>
 
             {transactions.length > 0 ? (
               <div className="space-y-4">
@@ -307,6 +313,7 @@ export default function Dashboard() {
                     tx.transaction.message.accountKeys[0].toBase58();
                   const receiver =
                     tx.transaction.message.accountKeys[1].toBase58();
+                  const signature = tx.transaction.signatures[0];
 
                   return (
                     <div
@@ -317,8 +324,7 @@ export default function Dashboard() {
                         <span className="font-medium">Sender:</span> {sender}
                       </div>
                       <div className="text-sm text-gray-700 dark:text-gray-300">
-                        <span className="font-medium">Receiver:</span>{" "}
-                        {receiver}
+                        <span className="font-medium">Receiver:</span> {receiver}
                       </div>
                       <div className="text-sm text-gray-700 dark:text-gray-300">
                         <span className="font-medium">Amount:</span>{" "}
@@ -331,6 +337,14 @@ export default function Dashboard() {
                       >
                         Status: {status}
                       </div>
+
+                      {/* ✅ Share Receipt Button */}
+                      <button
+                        onClick={() => shareTransactionReceipt(signature)}
+                        className="mt-2 bg-indigo-500 hover:bg-indigo-600 text-white text-sm px-3 py-1 rounded w-fit"
+                      >
+                        📤 Share Receipt
+                      </button>
                     </div>
                   );
                 })}
