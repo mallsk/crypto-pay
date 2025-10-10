@@ -34,7 +34,7 @@ export default function Dashboard() {
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [showQR, setShowQR] = useState(false);
   const [transactions, setTransactions] = useState<any[]>([]);
-  const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+  const connection = new Connection(process.env.NEXT_PUBLIC_ALCHEMY_URL!, "confirmed");
 
   useEffect(() => {
     if (!publicKey) {
